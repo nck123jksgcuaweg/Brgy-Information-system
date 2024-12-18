@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barangay Information System</title>
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>BARANGAY INFORMATION MANAGEMENT SYSTEM</h2>
+        </div>
+        <div class="admin-info">
+            <img src="https://via.placeholder.com/80" alt="Admin Avatar" class="admin-avatar">
+            <p>ADMINISTRATOR</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> DASHBOARD</a></li>
+            <li><a href="#" data-section="manage-residents"><i class="fas fa-users"></i> RESIDENTS</a></li>
+            <li><a href="#" data-section="request-certificate"><i class="fas fa-file-alt"></i> CERTIFICATE REQUEST</a></li>
+            <li><a href="#" data-section="manage-announcements"><i class="fas fa-bullhorn"></i> ANNOUNCEMENT</a></li>
+            <li><a href="#" class="settings" data-section="settings"><i class="fas fa-cog"></i> SETTINGS</a></li>
+            <li><a href="#" class="logout"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="dashboard-title">DASHBOARD</h1>
+            <div class="user-info">
+                <p>TODAY IS: <span id="current-date"></span></p>
+                <p style="margin-left: 20px;">nelsonbalneg <i class="fas fa-chevron-down"></i></p>
+            </div>
+        </div>
+
+        <section id="dashboard" class="section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 id="total-residents">12</h3>
+                    <p>RESIDENTS</p>
+                    <p>AS OF <span class="current-date"></span></p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="new-blotter">1</h3>
+                    <p>CERTIFICATE REQUEST</p>
+                    <p>AS OF <span class="current-date"></span></p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="served-clearance">2</h3>
+                    <p>ANNOUNCEMENT</p>
+                    <p>FOR TODAY</p>
+                </div>
+            </div>
+
+            <div class="mission-statement">
+                <h3>LGU MISSION STATEMENT</h3>
+                <p>To improve the quality of life of the people of Biri by providing employment, livelihood, basic social services, adequate infrastructure support facilities, sustainable agro-industrial growth, ecologically-balanced environment through a firm, transparent and innovative leadership promoting development plans and programs.</p>
+            </div>
+
+            <img src="GENERAL ASSEMBLY.png" alt="Featured Image" class="featured-image">
+        </section>
+
+        <section id="manage-residents" class="section">
+            <h2>Manage Residents</h2>
+            <form id="add-resident-form">
+                <input type="text" id="resident-name" placeholder="Resident Name" required>
+                <input type="text" id="resident-id" placeholder="Resident ID" required>
+                <input type="text" id="resident-address" placeholder="Address" required>
+                <button type="submit">Add Resident</button>
+            </form>
+            <div id="residents-list"></div>
+        </section>
+
+        <section id="request-certificate" class="section">
+            <h2>Request Certificate</h2>
+            <h4>Certificate Requests</h4>
+            <table id="certificateTable">
+                <thead>
+                    <tr>
+                        <th>Resident</th>
+                        <th>Purpose</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nick Lusantas</td>
+                        <td>Scholarship</td>
+                        <td>
+                            <button class="btn btn-approve">Approve</button>
+                            <button class="btn btn-disapprove">Disapprove</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Emmanuel Jarito</td>
+                        <td>Employment</td>
+                        <td>
+                            <button class="btn btn-approve">Approve</button>
+                            <button class="btn btn-disapprove">Disapprove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="manage-announcements" class="section">
+            <h2>Manage Announcements</h2>
+            <form id="add-announcement-form">
+                <input type="text" id="announcement-title" placeholder="Announcement Title" required>
+                <textarea id="announcement-content" placeholder="Announcement Content" required></textarea>
+                <input type="date" id="announcement-date" required>
+                <button type="submit">Add Announcement</button>
+            </form>
+            <div id="announcements-list"></div>
+        </section>
+
+        <section id="settings" class="section">
+            <h2>Settings</h2>
+            <p>This is the settings page. Add your settings content here.</p>
+        </section>
+    </div>
+
+    <script>
+        // Update current date
+        function updateDate() {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('current-date').textContent = dateString;
+            document.querySelectorAll('.current-date').forEach(el => el.textContent = dateString);
+        }
+
+        // Sample data
+        let residents = [
+            { id: '001', name: 'John Doe', address: '123 Main St' },
+            { id: '002', name: 'Jane Smith', address: '456 Elm St' }
+        ];
+
+        let certificateRequests = [
+            { id: '001', type: 'Barangay Clearance', resident: 'John Doe', purpose: 'Employment', status: 'Pending', requestDate: '2023-06-15' },
+            { id: '002', type: 'Certificate of Residency', resident: 'Jane Smith', purpose: 'School Requirement', status: 'Pending', requestDate: '2023-06-18' }
+        ];
+
+        let announcements = [
+            { id: '001', title: 'COVID-19 Vaccination Drive', content: 'Free vaccinations available at the community center', date: '2023-06-20' },
+            { id: '002', title: 'Annual Cleanup Day', content: 'Join us for our annual barangay cleanup', date: '2023-07-15' }
+        ];
+
+        // Function to animate counting up to a number
+        function animateValue(id, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp  = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                document.getElementById(id).textContent = value.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Update dashboard stats with animation
+        function updateDashboard() {
+            animateValue('total-residents', 0, residents.length, 2000);
+            animateValue('new-blotter', 0, certificateRequests.length, 2000);
+            animateValue('served-clearance', 0, announcements.length, 2000);
+        }
+
+        // Function to render residents list
+        function renderResidentsList() {
+            const list = document.getElementById('residents-list');
+            list.innerHTML = '';
+            residents.forEach(resident => {
+                const li = document.createElement('div');
+                li.className = 'list-item';
+                li.innerHTML = `
+                    <div>
+                        <strong>${resident.name}</strong>
+                        <p>ID: ${resident.id}</p>
+                        <p>Address: ${resident.address}</p>
+                    </div>
+                    <div>
+                        <button onclick="editResident('${resident.id}')">Edit</button>
+                        <button onclick="deleteResident('${resident.id}')">Delete</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // Function to add a new resident
+        function addResident(newResident) {
+            residents.push(newResident);
+            renderResidentsList();
+            updateDashboard();
+        }
+
+        // Event listener for add resident form
+        document.getElementById('add-resident-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newResident = {
+                id: 'R' + (residents.length + 1).toString().padStart(3, '0'),
+                name: document.getElementById('resident-name').value,
+                address: document.getElementById('resident-address').value
+            };
+            addResident(newResident);
+            this.reset();
+        });
+
+        // Function to edit a resident (placeholder)
+        function editResident(id) {
+            console.log(`Editing resident with ID: ${id}`);
+        }
+
+        // Function to delete a resident
+        function deleteResident(id) {
+            residents = residents.filter(resident => resident.id !== id);
+            renderResidentsList();
+            updateDashboard();
+        }
+
+        // Function to render certificate requests table
+        function renderCertificateRequestsTable() {
+            const table = document.getElementById('certificateTable');
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = '';
+            certificateRequests.forEach(request => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${request.resident}</td>
+                    <td>${request.purpose}</td>
+                    <td>
+                        <button class="btn btn-approve" onclick="updateRequestStatus('${request.id}', 'Approved')">Approve</button>
+                        <button class="btn btn-disapprove" onclick="updateRequestStatus('${request.id}', 'Disapproved')">Disapprove</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Function to update request status
+        function updateRequestStatus(id, status) {
+            const request = certificateRequests.find(r => r.id === id);
+            if (request) {
+                request.status = status;
+                renderCertificateRequestsTable();
+            }
+        }
+
+        // Function to render announcements list
+        function renderAnnouncementsList() {
+            const list = document.getElementById('announcements-list');
+            list.innerHTML = '';
+            announcements.forEach(announcement => {
+                const li = document.createElement('div');
+                li.className = 'list-item';
+                li.innerHTML = `
+                    <div>
+                        <strong>${announcement.title}</strong>
+                        <p>${announcement.content}</p>
+                        <p>Date: ${announcement.date}</p>
+                    </div>
+                    <div>
+                        <button onclick="editAnnouncement('${announcement.id}')">Edit</button>
+                        <button onclick="deleteAnnouncement('${announcement.id}')">Delete</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        // Function to add a new announcement
+        function addAnnouncement(newAnnouncement) {
+            announcements.push(newAnnouncement);
+            renderAnnouncementsList();
+        }
+
+        // Event listener for add announcement form
+        document.getElementById('add-announcement-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newAnnouncement = {
+                id: 'A' + (announcements.length + 1).toString().padStart(3, '0'),
+                title: document.getElementById('announcement-title').value,
+                content: document.getElementById('announcement-content').value,
+                date: document.getElementById('announcement-date').value
+            };
+            addAnnouncement(newAnnouncement);
+            this.reset();
+        });
+
+        // Function to edit an announcement (placeholder)
+        function editAnnouncement(id) {
+            console.log(`Editing announcement with ID: ${id}`);
+        }
+
+        // Function to delete an announcement
+        function deleteAnnouncement(id) {
+            announcements = announcements.filter(announcement => announcement.id !== id);
+            renderAnnouncementsList();
+        }
+
+        // Function to show active section and update sidebar menu
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.sidebar-menu a[data-section="${sectionId}"]`).classList.add('active');
+
+            document.querySelector('.dashboard-title').textContent = sectionId.replace('-', ' ').toUpperCase();
+        }
+
+        // Event listeners for sidebar menu items
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                if (sectionId) {
+                    showSection(sectionId);
+                } else if (this.classList.contains('logout')) {
+                    // Handle logout (you can add your logout logic here)
+                    alert('Logging out...');
+                }
+            });
+        });
+
+        // Initialize
+        function init() {
+            updateDate();
+            updateDashboard();
+            renderResidentsList();
+            renderCertificateRequestsTable();
+            renderAnnouncementsList();
+        }
+
+        // Call init when the page loads
+        window.onload = init;
+    </script>
+</body>
+</html>
